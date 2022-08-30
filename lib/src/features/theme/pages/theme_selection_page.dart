@@ -37,7 +37,7 @@ class ThemeSelectionPage extends StatelessWidget {
           // its ListTile child used as its activation button. Without this, it
           // is always left aligned on the ListTile and would require a
           // computed offset. This trick, or maybe a bit of a hack, does it
-          // automatically. No idea why, just something I noticed by accident.
+          // automatically. No idea why, just something @rydmike noticed by accident.
           child: Scaffold(
             appBar: AppBar(
               title: Text('Theme Selection'.i18n),
