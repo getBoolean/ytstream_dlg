@@ -25,9 +25,10 @@ class App extends StatelessWidget {
     }
 
     return AnimatedBuilder(
+      key: const ValueKey('RootAnimatedBuilder'),
       animation: themeController,
       builder: (BuildContext context, Widget? child) => MaterialApp(
-        key: const ValueKey('FluentApp'),
+        key: const ValueKey('RootMaterialApp'),
         title: kAppTitle,
         home: I18n(
           key: const ValueKey('RootI18n'),
