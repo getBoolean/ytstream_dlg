@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ytstream_dlg/src/features/theme/controllers/theme_controller.dart';
 import 'package:ytstream_dlg/src/features/theme/pages/theme_selection_page.dart';
+import 'package:ytstream_dlg/src/localization/app.i18n.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({
@@ -19,7 +20,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Home'),
+        title: Text('Home'.i18n),
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),

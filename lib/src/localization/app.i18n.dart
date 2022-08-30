@@ -12,6 +12,8 @@ extension Localization on String {
               kAppTitle: kAppTitle,
               kAppTitleShort: kAppTitleShort,
               kLegalese: 'Blah blah.',
+              'Home': 'Home',
+              'Theme Selection': 'Theme Selection',
             },
           }
       // +

@@ -25,28 +25,6 @@ class AppData {
   static String title(BuildContext context) =>
       (context as Element).findAncestorWidgetOfExactType<MaterialApp>()!.title;
 
-  // When building new public web versions of the demos, make sure to
-  // update this info before triggering GitHub actions CI/CD that builds them.
-  //
-  // The name of the package this app demonstrates.
-  static const String packageName = 'FlexColor\u{00AD}Scheme';
-  // Version of the WEB build, usually same as package, but it also has a
-  // build numbers.
-  static const String versionMajor = '5';
-  static const String versionBuild = '01';
-  static const String version = '$versionMajor.2.0 Build-$versionBuild';
-  static const String packageVersion = '5.2.0-dev.1';
-  static const String flutterVersion = 'master 3.1.0-0.0.pre.2216';
-  static const String copyright = '© 2020, 2021, 2022';
-  static const String author = 'Mike Rydstrom';
-  static const String license = 'BSD 3-Clause License';
-  static const String icon = 'assets/images/app_icon.png';
-  static final Uri packageUri = Uri(
-    scheme: 'https',
-    host: 'pub.dev',
-    path: 'packages/flex_color_scheme',
-  );
-
   // The max dp width used for layout content on the screen in the available
   // body area. Wider content gets growing side padding, kind of like on most
   // web pages when they are used on super wide screen. This is typically used

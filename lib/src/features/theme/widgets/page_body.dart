@@ -61,7 +61,7 @@ class PageBody extends StatelessWidget {
         // This allows us to un-focus a widget, typically a TextField with focus
         // by tapping somewhere outside it. It is no longer needed on desktop
         // builds, it is done automatically there, but not on tablet and phone
-        // app. In this demo we want it on them too.
+        // app.
         onTap: () => FocusScope.of(context).unfocus(),
         child: Center(
           child: ConstrainedBox(

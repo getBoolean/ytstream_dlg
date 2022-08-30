@@ -8,6 +8,7 @@ import 'package:ytstream_dlg/src/features/theme/widgets/switch_list_tile_adaptiv
 import 'package:ytstream_dlg/src/features/theme/widgets/theme_popup_menu.dart';
 import 'package:ytstream_dlg/src/features/theme/widgets/theme_showcase.dart';
 import 'package:ytstream_dlg/src/features/theme/widgets/use_key_colors_buttons.dart';
+import 'package:ytstream_dlg/src/localization/app.i18n.dart';
 
 class ThemeSelectionPage extends StatelessWidget {
   const ThemeSelectionPage({
@@ -39,7 +40,7 @@ class ThemeSelectionPage extends StatelessWidget {
           // automatically. No idea why, just something I noticed by accident.
           child: Scaffold(
             appBar: AppBar(
-              title: const Text('Theme Selection'),
+              title: Text('Theme Selection'.i18n),
               // TODO: Add an about icon
               // actions: const <Widget>[AboutIconButton()],
             ),
