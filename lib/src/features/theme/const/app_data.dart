@@ -2,8 +2,6 @@ import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-// import 'package:ytstream_dlg/src/features/theme/widgets/app/responsive_scaffold.dart';
-
 /// App static functions and constants used in the example applications.
 ///
 /// In a real app you probably prefer putting these into different static
@@ -21,7 +19,6 @@ class AppData {
   // same one that is defined in each example as its app name. Handy as we only
   // need to update in one place, where it belongs and no need to put it as
   // a const somewhere and no need to pass it around via a title prop either.
-  // Also used in the About box as app name.
   static String title(BuildContext context) =>
       (context as Element).findAncestorWidgetOfExactType<MaterialApp>()!.title;
 
@@ -127,43 +124,6 @@ class AppData {
       letterSpacing: 0.5, // Defaults to 1.5 in Material2018 Typography.
     ),
   );
-
-  // TODO(@getBoolean): Add these widgets
-  // The menu items that we use on the responsive side menu.
-  // static const List<ResponsiveMenuItems> menuItems = <ResponsiveMenuItems>[
-  //   ResponsiveMenuItems(
-  //     label: 'Grid view',
-  //     labelSecondary: 'Page view',
-  //     icon: Icons.calendar_view_month_outlined,
-  //     iconSecondary: Icons.view_array_outlined,
-  //   ),
-  //   ResponsiveMenuItems(
-  //     label: 'Dark mode',
-  //     labelSecondary: 'Light mode',
-  //     icon: Icons.bedtime,
-  //     iconSecondary: Icons.wb_sunny,
-  //   ),
-  //   ResponsiveMenuItems(
-  //     label: 'Copy theme code',
-  //     icon: Icons.integration_instructions_outlined,
-  //   ),
-  //   ResponsiveMenuItems(
-  //     label: 'Copy ColorScheme',
-  //     icon: Icons.palette_outlined,
-  //   ),
-  //   ResponsiveMenuItems(
-  //     label: 'Expand all',
-  //     icon: Icons.open_in_full_outlined,
-  //   ),
-  //   ResponsiveMenuItems(
-  //     label: 'Close all',
-  //     icon: Icons.close_fullscreen_outlined,
-  //   ),
-  //   ResponsiveMenuItems(
-  //     label: 'Reset settings',
-  //     icon: Icons.replay_outlined,
-  //   ),
-  // ];
 
   // TODO(rydmike): Remove when fix for issue #10386 has landed in stable.
   // Used as a workaround to provide a M2 like TextTheme using M3 Typography,

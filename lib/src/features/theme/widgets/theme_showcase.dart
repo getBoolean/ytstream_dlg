@@ -39,26 +39,31 @@ class ThemeShowcase extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
+        const SizedBox(height: 8),
+        const TextInputField(),
+        const Divider(),
         const ElevatedButtonShowcase(),
         const SizedBox(height: 8),
         const OutlinedButtonShowcase(),
         const SizedBox(height: 8),
         const TextButtonShowcase(),
         const SizedBox(height: 8),
+        const ToggleButtonsShowcase(),
         const Divider(),
         const FabShowcase(),
         const SizedBox(height: 16),
-        const ToggleButtonsShowcase(),
+        const ChipShowcase(),
+        const Divider(),
+        const SizedBox(height: 8),
+        const PopupMenuShowcase(),
+        const SizedBox(height: 8),
+        const SizedBox(height: 8),
+        const IconButtonCircleAvatarDropdownTooltipShowcase(),
+        const Divider(),
         const SwitchShowcase(),
         const CheckboxShowcase(),
         const RadioShowcase(),
-        const PopupMenuShowcase(),
         const SizedBox(height: 8),
-        const IconButtonCircleAvatarDropdownTooltipShowcase(),
-        const SizedBox(height: 8),
-        const ChipShowcase(),
-        const Divider(),
-        const TextInputField(),
         const Divider(),
         const ListTileShowcase(),
         const Divider(),
@@ -114,7 +119,7 @@ class ThemeShowcase extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   child: Text('Primary TextTheme',
-                      style: Theme.of(context).primaryTextTheme.subtitle1),
+                      style: Theme.of(context).primaryTextTheme.titleMedium),
                 ),
                 const PrimaryTextThemeShowcase(),
               ],
@@ -155,7 +160,7 @@ class ElevatedButtonShowcase extends StatelessWidget {
 }
 
 // These are commented until https://github.com/flutter/flutter/pull/107382
-// lands in master 3.1.0 channel.
+// lands in master 3.1.0 channel. and makes their way to stable channel.
 // TODO(rydmike): Add these buttons to showcase
 // TODO(rydmike): FCS fix FCS M3 defaults.
 //
@@ -338,13 +343,13 @@ class FabShowcase extends StatelessWidget {
       runSpacing: 4,
       children: <Widget>[
         FloatingActionButton.small(
+          heroTag: 'FAB small',
           onPressed: () {},
           tooltip: 'Tooltip on small\nFloatingActionButton',
-          heroTag: 'TooltipOnSmallFloatingActionButton',
           child: const Icon(Icons.accessibility),
         ),
         FloatingActionButton.extended(
-          heroTag: 'TooltipOnNonExtendedFloatingActionButton.extended',
+          heroTag: 'FAB extended false',
           isExtended: false,
           onPressed: () {},
           tooltip: 'Tooltip on extended:false\nFloatingActionButton.extended',
@@ -352,7 +357,7 @@ class FabShowcase extends StatelessWidget {
           label: const Text('Extended'),
         ),
         FloatingActionButton.extended(
-          heroTag: 'TooltipOnExtendedFloatingActionButton.extended',
+          heroTag: 'FAB extended true',
           isExtended: true,
           onPressed: () {},
           tooltip: 'Tooltip on extended:true\nFloatingActionButton.extended',
@@ -360,13 +365,13 @@ class FabShowcase extends StatelessWidget {
           label: const Text('Extended'),
         ),
         FloatingActionButton(
-          heroTag: 'TooltipOnDefaultFloatingActionButton',
+          heroTag: 'FAB standard',
           onPressed: () {},
           tooltip: 'Tooltip on default\nFloatingActionButton',
           child: const Icon(Icons.accessibility),
         ),
         FloatingActionButton.large(
-          heroTag: 'TooltipOnLargeFloatingActionButton',
+          heroTag: 'FAB large',
           onPressed: () {},
           tooltip: 'Tooltip on large\nFloatingActionButton',
           child: const Icon(Icons.accessibility),
@@ -522,9 +527,9 @@ class _PopupMenuButton extends StatelessWidget {
         child: ElevatedButton.icon(
           style: ElevatedButton.styleFrom(
             elevation: 0,
-            primary: scheme.primary,
-            onPrimary: scheme.onPrimary,
-            onSurface: scheme.onSurface,
+            backgroundColor: scheme.primary,
+            foregroundColor: scheme.onPrimary,
+            disabledForegroundColor: scheme.onSurface,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(radius ?? 8)),
             ),
@@ -607,8 +612,17 @@ class _DropDownButtonFormFieldState extends State<_DropDownButtonFormField> {
   }
 }
 
-class IconButtonCircleAvatarDropdownTooltipShowcase extends StatelessWidget {
+class IconButtonCircleAvatarDropdownTooltipShowcase extends StatefulWidget {
   const IconButtonCircleAvatarDropdownTooltipShowcase({super.key});
+
+  @override
+  State<IconButtonCircleAvatarDropdownTooltipShowcase> createState() =>
+      _IconButtonCircleAvatarDropdownTooltipShowcaseState();
+}
+
+class _IconButtonCircleAvatarDropdownTooltipShowcaseState
+    extends State<IconButtonCircleAvatarDropdownTooltipShowcase> {
+  bool isLockOpen = false;
 
   @override
   Widget build(BuildContext context) {
@@ -623,6 +637,20 @@ class IconButtonCircleAvatarDropdownTooltipShowcase extends StatelessWidget {
             icon: const Icon(Icons.accessibility),
             tooltip: 'Tooltip on\nIconButton',
             onPressed: () {},
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          child: IconButton(
+            icon: const Icon(Icons.lock_outlined),
+            selectedIcon: const Icon(Icons.lock_open_outlined),
+            tooltip: isLockOpen ? 'In M3 tap to close' : 'In M3 tap to open',
+            isSelected: isLockOpen,
+            onPressed: () {
+              setState(() {
+                isLockOpen = !isLockOpen;
+              });
+            },
           ),
         ),
         const Tooltip(
@@ -825,41 +853,126 @@ class AppBarShowcase extends StatelessWidget {
       context: context,
       removeBottom: true,
       removeTop: true,
-      child: Stack(
-        alignment: AlignmentDirectional.center,
+      child: Column(
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Wrap(spacing: 8, runSpacing: 8, children: <Widget>[
-              const Text('Behind AppBar'),
-              FloatingActionButton.small(
-                onPressed: () {},
-                heroTag: 'FloatingActionButton.smallAddBehindAppBar',
-                child: const Icon(Icons.add),
+          Stack(
+            alignment: AlignmentDirectional.center,
+            children: <Widget>[
+              const _BehindAppBar(),
+              AppBar(
+                leading: IconButton(
+                  icon: const Icon(Icons.menu),
+                  onPressed: () {},
+                ),
+                title: const Text('Standard AppBar'),
+                actions: <Widget>[
+                  IconButton(
+                    icon: const Icon(Icons.search),
+                    onPressed: () {},
+                  ),
+                ],
               ),
-              InputChip(
-                showCheckmark: true,
-                selected: true,
-                label: const Text('Chip check'),
-                onSelected: (bool value) {},
-              ),
-            ]),
+            ],
           ),
-          AppBar(
-            leading: IconButton(
-              icon: const Icon(Icons.menu),
-              onPressed: () {},
-            ),
-            title: const Text('Material AppBar'),
-            actions: <Widget>[
-              IconButton(
-                icon: const Icon(Icons.search),
-                onPressed: () {},
+          // A bit nasty usage of CustomScrollViews and Slivers and shrinkWraps,
+          // to show what the SliverAppBars look like, don't do this in a
+          // production app. With just a few widgets, we can get away with it.
+          Stack(
+            alignment: AlignmentDirectional.center,
+            children: <Widget>[
+              const _BehindAppBar(),
+              CustomScrollView(
+                shrinkWrap: true,
+                slivers: <Widget>[
+                  SliverAppBar(
+                    leading: IconButton(
+                      icon: const Icon(Icons.menu),
+                      onPressed: () {},
+                    ),
+                    title: const Text('SliverAppBar'),
+                    actions: <Widget>[
+                      IconButton(
+                        icon: const Icon(Icons.search),
+                        onPressed: () {},
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ],
+          ),
+          Stack(
+            alignment: AlignmentDirectional.center,
+            children: <Widget>[
+              const _BehindAppBar(),
+              CustomScrollView(
+                shrinkWrap: true,
+                slivers: <Widget>[
+                  SliverAppBar.medium(
+                    leading: IconButton(
+                      icon: const Icon(Icons.menu),
+                      onPressed: () {},
+                    ),
+                    title: const Text('SliverAppBar.medium'),
+                    actions: <Widget>[
+                      IconButton(
+                        icon: const Icon(Icons.search),
+                        onPressed: () {},
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Stack(
+            alignment: AlignmentDirectional.center,
+            children: <Widget>[
+              const _BehindAppBar(),
+              CustomScrollView(
+                shrinkWrap: true,
+                slivers: <Widget>[
+                  SliverAppBar.large(
+                    leading: IconButton(
+                      icon: const Icon(Icons.menu),
+                      onPressed: () {},
+                    ),
+                    title: const Text('SliverAppBar.large'),
+                    actions: <Widget>[
+                      IconButton(
+                        icon: const Icon(Icons.search),
+                        onPressed: () {},
+                      ),
+                    ],
+                  )
+                ],
               ),
             ],
           ),
         ],
       ),
+    );
+  }
+}
+
+class _BehindAppBar extends StatelessWidget {
+  const _BehindAppBar();
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Wrap(spacing: 8, runSpacing: 8, children: <Widget>[
+        const Text('Behind AppBar'),
+        const CircleAvatar(child: Text('AV')),
+        InputChip(
+          showCheckmark: true,
+          selected: true,
+          label: const Text('Chip check'),
+          onSelected: (bool value) {},
+        ),
+      ]),
     );
   }
 }
@@ -1021,10 +1134,10 @@ class _BottomNavigationBarShowcaseState
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Wrap(spacing: 8, runSpacing: 8, children: <Widget>[
-                  const Text('Behind BottomNavBar'),
+                  const Text('Behind Bottom'),
                   FloatingActionButton.small(
+                    heroTag: 'Behind Bottom',
                     onPressed: () {},
-                    heroTag: 'FloatingActionButton.smallAddBehindBottomNavBar',
                     child: const Icon(Icons.add),
                   ),
                   InputChip(
@@ -1074,9 +1187,9 @@ class _BottomNavigationBarShowcaseState
           padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
           child: Text(
             'Default SDK background color is theme canvasColor via Material, '
-            'and theme.canvasColor is set to theme.colorScheme.background, '
-            'elevation is 8. FlexColorScheme sub-theme default is '
-            'colorScheme.background and elevation 0.',
+            'and canvasColor is set to color scheme background, elevation '
+            'is 8. FCS sub-theme default is color scheme background and '
+            'elevation 0.',
             style: denseBody,
           ),
         ),
@@ -1118,8 +1231,8 @@ class _NavigationBarShowcaseState extends State<NavigationBarShowcase> {
                 child: Wrap(spacing: 8, runSpacing: 8, children: <Widget>[
                   const Text('Behind NavBar'),
                   FloatingActionButton.small(
+                    heroTag: 'Behind NavBar',
                     onPressed: () {},
-                    heroTag: 'FloatingActionButton.smallAddBehindNavBar',
                     child: const Icon(Icons.add),
                   ),
                   InputChip(
@@ -1165,10 +1278,10 @@ class _NavigationBarShowcaseState extends State<NavigationBarShowcase> {
         Padding(
           padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
           child: Text(
-            'Default SDK background color is theme.colorScheme.surface with '
-            'in an onSurface (in M2), primary (in M3) overlay color, with '
-            'elevation 3. FlexColorScheme component theme default is '
-            'colorScheme.background, with used surface blend and elevation 0.',
+            'Default background color is surface with an onSurface overlay '
+            'color in M2, and primary in M3, with elevation 3. '
+            'FlexColorScheme component theme default is color scheme '
+            'background, with used surface blend and elevation 0.',
             style: denseBody,
           ),
         ),
@@ -1460,7 +1573,6 @@ class AlertDialogShowcase extends StatelessWidget {
         TextButton(onPressed: () {}, child: const Text('CANCEL')),
         TextButton(onPressed: () {}, child: const Text('ALLOW')),
       ],
-      actionsPadding: const EdgeInsets.symmetric(horizontal: 16),
     );
   }
 }
@@ -1499,6 +1611,310 @@ class MaterialAndBottomSheetShowcase extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
+        Text('Material elevation and tint', style: denseHeader),
+        Text(
+          'When useMaterial3 is true, Material gets no elevation, '
+          'unless its shadowColor is also specified, which is not needed when '
+          'it is false and using M2. To in M3 give it surface elevated '
+          'tint, also specify its surfaceTint color.',
+          style: denseBody,
+        ),
+        const SizedBox(height: 12),
+        Text('Material type canvas', style: denseHeader),
+        Text(
+          'Default background color is theme canvasColor, and '
+          'theme canvasColor is set to theme colorScheme background. The '
+          'color canvasColor is going to be deprecated in Flutter SDK',
+          style: denseBody,
+        ),
+        const Divider(),
+        const SizedBox(height: 8),
+        const Material(
+          type: MaterialType.canvas,
+          elevation: 0,
+          child: SizedBox(
+            height: 60,
+            child: Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Center(
+                child: Text(
+                  'Material type canvas, elevation 0, '
+                  'default',
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 8),
+        const Divider(),
+        const SizedBox(height: 8),
+        const Material(
+          type: MaterialType.canvas,
+          elevation: 1,
+          child: SizedBox(
+            height: 60,
+            child: Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Center(
+                child: Text(
+                  'Material type canvas, elevation 1, '
+                  'default',
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 8),
+        Material(
+          type: MaterialType.canvas,
+          elevation: 1,
+          surfaceTintColor: colorScheme.surfaceTint,
+          child: const SizedBox(
+            height: 60,
+            child: Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Center(
+                child: Text(
+                  'Material type canvas, elevation 1, '
+                  'with surfaceTint, no shadow',
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 8),
+        Material(
+          type: MaterialType.canvas,
+          elevation: 1,
+          surfaceTintColor: colorScheme.surfaceTint,
+          shadowColor: colorScheme.shadow,
+          child: const SizedBox(
+            height: 60,
+            child: Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Center(
+                child: Text(
+                  'Material type canvas, elevation 1, '
+                  'with surfaceTint, and shadow',
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 8),
+        const Divider(),
+        const SizedBox(height: 8),
+        const Material(
+          type: MaterialType.canvas,
+          elevation: 6,
+          child: SizedBox(
+            height: 60,
+            child: Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Center(
+                child: Text(
+                  'Material type canvas, elevation 6, '
+                  'default',
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 8),
+        Material(
+          type: MaterialType.canvas,
+          elevation: 6,
+          surfaceTintColor: colorScheme.surfaceTint,
+          child: const SizedBox(
+            height: 60,
+            child: Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Center(
+                child: Text(
+                  'Material type canvas, elevation 6, '
+                  'with surfaceTint, no shadow',
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 8),
+        Material(
+          type: MaterialType.canvas,
+          elevation: 6,
+          surfaceTintColor: colorScheme.surfaceTint,
+          shadowColor: colorScheme.shadow,
+          child: const SizedBox(
+            height: 60,
+            child: Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Center(
+                child: Text(
+                  'Material type canvas, elevation 6, '
+                  'with surfaceTint, and shadow',
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 8),
+        const Divider(),
+        const SizedBox(height: 8),
+        Text('Material type card', style: denseHeader),
+        Text(
+          'Default background color is theme cardColor, and '
+          'theme cardColor is set to theme colorScheme surface. The '
+          'color cardColor is going to be deprecated in Flutter SDK',
+          style: denseBody,
+        ),
+        const Divider(),
+        const SizedBox(height: 8),
+        const Material(
+          type: MaterialType.card,
+          elevation: 0,
+          child: SizedBox(
+            height: 60,
+            child: Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Center(
+                child: Text(
+                  'Material type card, elevation 0, '
+                  'default',
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 8),
+        const Divider(),
+        const SizedBox(height: 8),
+        const Material(
+          type: MaterialType.card,
+          elevation: 1,
+          child: SizedBox(
+            height: 60,
+            child: Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Center(
+                child: Text(
+                  'Material type card, elevation 1, '
+                  'default',
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 8),
+        Material(
+          type: MaterialType.card,
+          elevation: 1,
+          surfaceTintColor: colorScheme.surfaceTint,
+          child: const SizedBox(
+            height: 60,
+            child: Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Center(
+                child: Text(
+                  'Material type card, elevation 1, '
+                  'with surfaceTint, no shadow',
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 8),
+        Material(
+          type: MaterialType.card,
+          elevation: 1,
+          surfaceTintColor: colorScheme.surfaceTint,
+          shadowColor: colorScheme.shadow,
+          child: const SizedBox(
+            height: 60,
+            child: Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Center(
+                child: Text(
+                  'Material type card, elevation 1, '
+                  'with surfaceTint, and shadow',
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 8),
+        const Divider(),
+        const SizedBox(height: 8),
+        const Material(
+          type: MaterialType.card,
+          elevation: 6,
+          child: SizedBox(
+            height: 60,
+            child: Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Center(
+                child: Text(
+                  'Material type card, elevation 6, '
+                  'default',
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 8),
+        Material(
+          type: MaterialType.card,
+          elevation: 6,
+          surfaceTintColor: colorScheme.surfaceTint,
+          child: const SizedBox(
+            height: 60,
+            child: Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Center(
+                child: Text(
+                  'Material type card, elevation 6, '
+                  'with surfaceTint, no shadow',
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 8),
+        Material(
+          type: MaterialType.card,
+          elevation: 6,
+          surfaceTintColor: colorScheme.surfaceTint,
+          shadowColor: colorScheme.shadow,
+          child: const SizedBox(
+            height: 60,
+            child: Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Center(
+                child: Text(
+                  'Material type card, elevation 6, '
+                  'with surfaceTint, and shadow',
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 8),
+        const Divider(),
+        const SizedBox(height: 8),
+        const Divider(height: 1),
         MaterialBanner(
           padding: const EdgeInsets.all(20),
           content: const Text('Hello, I am a Material Banner'),
@@ -1513,95 +1929,6 @@ class MaterialAndBottomSheetShowcase extends StatelessWidget {
               onPressed: () {},
             ),
           ],
-        ),
-        const SizedBox(height: 12),
-        Text('Material elevation and tint', style: denseHeader),
-        Text(
-          'When using useMaterial3 set to true, Material gets no elevation, '
-          'unless its shadowColor is also specified, which is not needed when '
-          'it is false and using M2. To in M3 give it surface elevated '
-          'tint, also specify its surfaceTintColor. Below both are used.',
-          style: denseBody,
-        ),
-        const SizedBox(height: 12),
-        Text('Material type canvas', style: denseHeader),
-        Text(
-          'Default background color is theme canvasColor, and '
-          'theme canvasColor is set to theme colorScheme background. The '
-          'color canvasColor is going to be deprecated in Flutter SDK',
-          style: denseBody,
-        ),
-        Material(
-          type: MaterialType.canvas,
-          elevation: 0,
-          surfaceTintColor: colorScheme.surfaceTint,
-          shadowColor: colorScheme.shadow,
-          child: const SizedBox(
-            height: 50,
-            child: Center(child: Text('Material type canvas, elevation 0')),
-          ),
-        ),
-        const SizedBox(height: 10),
-        Material(
-          type: MaterialType.canvas,
-          elevation: 1,
-          surfaceTintColor: colorScheme.surfaceTint,
-          shadowColor: colorScheme.shadow,
-          child: const SizedBox(
-            height: 50,
-            child: Center(child: Text('Material type canvas, elevation 1')),
-          ),
-        ),
-        const SizedBox(height: 10),
-        Material(
-          type: MaterialType.canvas,
-          elevation: 4,
-          surfaceTintColor: colorScheme.surfaceTint,
-          shadowColor: colorScheme.shadow,
-          child: const SizedBox(
-            height: 50,
-            child: Center(child: Text('Material type canvas, elevation 4')),
-          ),
-        ),
-        const SizedBox(height: 32),
-        Text('Material type card', style: denseHeader),
-        Text(
-          'Default background color is theme cardColor, and '
-          'theme cardColor is set to theme colorScheme surface. The '
-          'color cardColor is going to be deprecated in Flutter SDK',
-          style: denseBody,
-        ),
-        Material(
-          type: MaterialType.card,
-          elevation: 0,
-          surfaceTintColor: colorScheme.surfaceTint,
-          shadowColor: colorScheme.shadow,
-          child: const SizedBox(
-            height: 50,
-            child: Center(child: Text('Material type card, elevation 0')),
-          ),
-        ),
-        const SizedBox(height: 10),
-        Material(
-          type: MaterialType.card,
-          elevation: 1,
-          surfaceTintColor: colorScheme.surfaceTint,
-          shadowColor: colorScheme.shadow,
-          child: const SizedBox(
-            height: 50,
-            child: Center(child: Text('Material type card, elevation 1')),
-          ),
-        ),
-        const SizedBox(height: 10),
-        Material(
-          type: MaterialType.card,
-          elevation: 4,
-          surfaceTintColor: colorScheme.surfaceTint,
-          shadowColor: colorScheme.shadow,
-          child: const SizedBox(
-            height: 50,
-            child: Center(child: Text('Material type card, elevation 4')),
-          ),
         ),
         const SizedBox(height: 24),
         AbsorbPointer(
@@ -1674,11 +2001,9 @@ class CardShowcase extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Text(
             'Default background color comes from Material of type card. '
-            'When using useMaterial3 set to true, Card gets no elevation '
-            'overlay color in dark mode, unless surfaceTintColor is also '
-            'specified, which is not needed when it is false and using M2. '
-            'To in M3 give it surface elevated '
-            'tint, also specify its surfaceTintColor. Below it is used.',
+            'When useMaterial3 is true, Card gets elevation based '
+            'surfaceTint, when it is false and using M2, surfaceTint has no '
+            'effect even if specified.',
             style: denseBody,
           ),
         ),
@@ -1686,35 +2011,167 @@ class CardShowcase extends StatelessWidget {
           elevation: 0,
           surfaceTintColor: colorScheme.surfaceTint,
           child: const SizedBox(
-            height: 50,
-            child: Center(child: Text('Card, elevation 0')),
+            height: 60,
+            child: Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Center(
+                child: Text(
+                  'Card, elevation 0',
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
           ),
         ),
         const SizedBox(height: 10),
+        const Card(
+          elevation: 1,
+          child: SizedBox(
+            height: 60,
+            child: Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Center(
+                  child: Text(
+                'Card, elevation 1, default',
+                textAlign: TextAlign.center,
+              )),
+            ),
+          ),
+        ),
+        const SizedBox(height: 2),
         Card(
           elevation: 1,
           surfaceTintColor: colorScheme.surfaceTint,
           child: const SizedBox(
-            height: 50,
-            child: Center(child: Text('Card, elevation 1')),
+            height: 60,
+            child: Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Center(
+                child: Text(
+                  'Card, elevation 1, with surfaceTint',
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
           ),
         ),
-        const SizedBox(height: 10),
+        const SizedBox(height: 2),
+        Card(
+          elevation: 1,
+          surfaceTintColor: colorScheme.surfaceTint,
+          shadowColor: Colors.transparent,
+          child: const SizedBox(
+            height: 60,
+            child: Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Center(
+                child: Text(
+                  'Card, elevation 1,  with surfaceTint, '
+                  'transparent shadow',
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+          ),
+        ),
+        const Divider(),
+        const Card(
+          elevation: 4,
+          child: SizedBox(
+            height: 60,
+            child: Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Center(
+                child: Text(
+                  'Card, elevation 4, default',
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 4),
         Card(
           elevation: 4,
           surfaceTintColor: colorScheme.surfaceTint,
           child: const SizedBox(
-            height: 50,
-            child: Center(child: Text('Card, elevation 4')),
+            height: 60,
+            child: Center(
+              child: Text(
+                'Card, elevation 4, with surfaceTint',
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 4),
+        Card(
+          elevation: 4,
+          surfaceTintColor: colorScheme.surfaceTint,
+          shadowColor: Colors.transparent,
+          child: const SizedBox(
+            height: 60,
+            child: Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Center(
+                child: Text(
+                  'Card, elevation 4, with surfaceTint, '
+                  'transparent shadow',
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+          ),
+        ),
+        const Divider(),
+        const Card(
+          elevation: 10,
+          child: SizedBox(
+            height: 60,
+            child: Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Center(
+                child: Text(
+                  'Card, elevation 10, default',
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
           ),
         ),
         const SizedBox(height: 10),
         Card(
-          elevation: 8,
+          elevation: 10,
           surfaceTintColor: colorScheme.surfaceTint,
           child: const SizedBox(
-            height: 50,
-            child: Center(child: Text('Card, elevation 8')),
+            height: 60,
+            child: Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Center(
+                child: Text(
+                  'Card, elevation 10, with surfaceTint',
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 10),
+        Card(
+          elevation: 10,
+          surfaceTintColor: colorScheme.surfaceTint,
+          shadowColor: Colors.transparent,
+          child: const SizedBox(
+            height: 60,
+            child: Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Center(
+                  child: Text(
+                'Card, elevation 10, with surfaceTint, '
+                'transparent shadow',
+                textAlign: TextAlign.center,
+              )),
+            ),
           ),
         ),
       ],

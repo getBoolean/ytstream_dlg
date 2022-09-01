@@ -1,8 +1,7 @@
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:ytstream_dlg/src/features/theme/const/const.dart';
-
+import 'package:ytstream_dlg/src/features/theme/const/store.dart';
 import 'package:ytstream_dlg/src/features/theme/services/theme_service.dart';
 
 // Source: https://github.com/rydmike/flex_color_scheme/blob/master/example/lib/shared/controllers/theme_controller.dart
