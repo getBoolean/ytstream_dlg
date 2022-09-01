@@ -129,8 +129,9 @@ class LeftSide extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute<void>(
-                            builder: (BuildContext context) =>
-                                ThemeSelectionPage(controller: controller),
+                            builder: (BuildContext context) => SelectionArea(
+                              child: ThemeSelectionPage(controller: controller),
+                            ),
                           ),
                         );
                       },
